@@ -1,14 +1,17 @@
-s = 4 # вес символа
-l = 25 # кол-во символов в строке
-l_weight = s * l # вес строки в байтах
-p = 50 # кол-во строк на странице
-p_weight = p * l_weight # вес страницы в байтах
-b = 100 # кол-во страниц в книге
-b_weight = b * p_weight # вес книги в байтах
+symbol = 4 # Вес символа
 
-diskette = 1.44 # объем дискеты в Мб
-diskette_in_bite = diskette * pow(1024, 2) # объем дискеты в байтах
+line = 25 # Кол-во символов в строке
+line_weight = symbol * line # Вес строки в байтах
 
-amount = int(diskette_in_bite // b_weight) # кол-во книг на дискете
+page = 50 # Кол-во строк на странице
+page_weight = page * line_weight # Вес страницы в байтах
+
+book = 100 # Кол-во страниц в книге
+book_weight = book * page_weight # Вес книги в байтах
+
+diskette = 1.44 # Объем дискеты в Мб
+diskette_in_bytes = diskette * pow(1024, 2) # Объем дискеты в байтах
+
+amount = int(diskette_in_bytes / book_weight) # Допустимое кол-во книг на дискете
 
 print("Количество книг, помещающихся на дискету:", amount)
