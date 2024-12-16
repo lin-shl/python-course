@@ -18,6 +18,10 @@ class Auto:
         >>> print(current_speed)
         110
         """
+        if not isinstance(speed, (int, float)):
+            raise TypeError("Скорость должна быть типа int или float.")
+        if not isinstance(name, str):
+            raise TypeError("Название марки авто должно быть типа str.")
         if speed < 0:
             raise ValueError("Скорость не может быть отрицательной.")
 
@@ -44,6 +48,8 @@ class Auto:
             ...
         ValueError: Установленная скорость не может быть меньше 5 км/ч.
         """
+        if not isinstance(normal_speed, (int, float)):
+            raise TypeError("Скорость должна быть типа int или float.")
         if normal_speed < 5:
             raise ValueError("Установленная скорость не может быть меньше 5 км/ч.")
         return speed > normal_speed
@@ -83,6 +89,8 @@ class Fine:
         """
         self.current_speed = current_speed
         self.allowed_speed = allowed_speed
+        if not isinstance(current_speed, (int, float)) or not isinstance(allowed_speed, (int, float)):
+            raise TypeError("Скорость должна быть типа int или float.")
 
     def fine(self) -> int:
         """
