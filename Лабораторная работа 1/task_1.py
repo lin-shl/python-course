@@ -38,23 +38,35 @@ class Auto:
         """
         ...
 
-
-    def speed_movement(self, time: int, distance: float) -> float:
+    def speed_movement(self, distance: float, time: int) -> float:
         """
         Метод вычисляет скорость движения автомобиля исходя из заданных параметров расстояния и времени
-        :param time: Время, за которое автомобиль прошёл расстояние.
+        :param time: Время в минутах, за которое автомобиль прошёл расстояние.
         :param distance: Расстояние, которое прошёл автомобиль.
         :return: Скорость, с которой автомобиль прошёл расстояние.
 
         Пример:
         >>> auto = Auto("BMW", "3", "Красный")
-        >>> auto.speed_movement(1266, 55.8)
+        >>> auto.speed_movement(100, 50)
+        120.0
         """
+
         if not isinstance(time, int):
             raise TypeError("Время должно быть типа int")
         if not isinstance(distance, (int, float)):
             raise TypeError("Расстояние должно быть типа int или float")
-        ...
+        if time < 0 or distance < 0:
+            raise ValueError("Значения не должны быть отрицательными")
+        if time == 0:
+            return 0.0
+
+        # Перевод минут в часы
+        time_h = time / 60
+
+        # Вычисление скорости
+        speed = distance / time_h
+
+        return speed
 
     def start(self, speed: float) -> None:
         """
@@ -65,8 +77,11 @@ class Auto:
         >>> auto = Auto("BMW", "3", "Красный")
         >>> auto.start(120)
         """
+        
         if not isinstance(speed, (int, float)):
             raise TypeError("Скорость должна быть типа int или float")
+        if speed < 0:
+            raise ValueError("Скорость не должна быть отрицательной")
         ...
 
 
@@ -87,6 +102,10 @@ class Fine:
 
         if not isinstance(current_speed, (int, float)) or not isinstance(allowed_speed, (int, float)):
             raise TypeError("Скорость должна быть типа int или float.")
+        if current_speed < 0:
+            raise ValueError("Скорость не может быть отрицательной")
+        if allowed_speed < 5:
+            raise ValueError("Допустимая скорость не может быть меньше 5 км/ч")
 
     def verdict(self) -> bool:
         """
@@ -97,21 +116,32 @@ class Fine:
         Пример:
         >>> fine = Fine(150, 90)
         >>> fine.verdict()
+        True
         """
-        ...
+        return self.current_speed > self.allowed_speed
 
     def value(self) -> int:
         """
         Функция, которая проверяет пороговое значение нарушения и возвращает
         соответствующий штраф
 
-        :return: Штраф в соответствии с пороговым значением.
+        :return: Сумму штрафа в соответствии с пороговым значением.
 
         Пример:
         >>> fine = Fine(150, 90)
         >>> fine.value()
+        3000
         """
-        ...
+        speed_difference = self.current_speed - self.allowed_speed
+
+        if speed_difference <= 20:
+            return 500
+        elif 20 < speed_difference <= 40:
+            return 1500
+        elif 40 < speed_difference <= 60:
+            return 3000
+        elif speed_difference > 60:
+            return 5000
 
     def cancel(self) -> None:
         """
@@ -124,19 +154,22 @@ class Fine:
         ...
 
 class Cam:
-    def __init__(self, memory: int):
+    def __init__(self, memory_capacity: float):
         """
         Подготовка записывающего устройства
 
-        :param memory: Содержит значение объема хранилища устройства.
+        :param memory_capacity: Содержит значение объема хранилища устройства.
 
         Пример:
         >>> camera = Cam(128)
         """
-        if not isinstance(memory, (int, float)):
+        if not isinstance(memory_capacity, (int, float)):
             raise TypeError("Объём памяти должен быть типа int или float")
-        if memory <= 0:
-            raise ValueError("Память не может быть отрицательно1 или равной нулю")
+        if memory_capacity <= 0:
+            raise ValueError("Память не может быть отрицательной или равной нулю")
+
+        self.memory_capacity = memory_capacity
+        self.occupied_memory = 0  # Изначально занятая память равна 0
 
     def record(self) -> None:
         """
@@ -146,6 +179,7 @@ class Cam:
         >>> camera = Cam(128)
         >>> camera.record()
         """
+        # Здесь должна быть логика записи, которая обновляет self.occupied_memory
         ...
 
     def clear(self) -> None:
@@ -156,6 +190,7 @@ class Cam:
         >>> camera = Cam(128)
         >>> camera.clear()
         """
+        self.occupied_memory = 0
         ...
 
     def play(self):
